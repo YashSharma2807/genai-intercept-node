@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DLP Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #111111;
+        color: #a1a1aa;
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <header
+      class="flex justify-between items-center mb-8 border-b border-[#222] pb-5"
+    >
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-8 h-8 rounded border border-[#333] bg-[#1a1a1a] flex items-center justify-center text-[#dfff00] font-bold"
+        >
+          H
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-white tracking-wide">
+            DLP Administration
+          </h1>
+          <p class="text-xs text-gray-500 mt-1 uppercase tracking-widest">
+            Security Console
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a
+          href="/"
+          class="text-xs font-bold text-gray-400 hover:text-white transition tracking-wider"
+          >RETURN</a
+        >
+        <a
+          href="/logout"
+          class="text-xs font-bold text-black bg-[#dfff00] hover:bg-[#c9e600] px-5 py-2.5 rounded-lg transition tracking-wider"
+          >SIGN OUT</a
+        >
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-[#1e1e1e] border border-[#333] rounded-xl p-6">
+        <div
+          class="text-[10px] text-gray-500 mb-2 font-bold uppercase tracking-widest"
+        >
+          Events Logged
+        </div>
+        <div class="text-4xl text-white font-bold">{{ audit_logs|length }}</div>
+      </div>
+      <div class="bg-[#1e1e1e] border border-[#333] rounded-xl p-6">
+        <div
+          class="text-[10px] text-gray-500 mb-2 font-bold uppercase tracking-widest"
+        >
+          Active Policies
+        </div>
+        <div class="text-4xl text-[#dfff00] font-bold">5</div>
+        <div class="text-[10px] text-gray-400 mt-2 uppercase tracking-wider">
+          Emails, Passwords, CC, IDs, AWS
+        </div>
+      </div>
+      <div class="bg-[#1e1e1e] border border-[#333] rounded-xl p-6">
+        <div
+          class="text-[10px] text-gray-500 mb-2 font-bold uppercase tracking-widest"
+        >
+          Status
+        </div>
+        <div
+          class="text-lg text-white font-bold mt-2 flex items-center tracking-wider"
+        >
+          <span class="w-2 h-2 rounded-full bg-[#dfff00] mr-2"></span> SECURE
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#1e1e1e] border border-[#333] rounded-xl overflow-hidden">
+      <div
+        class="px-6 py-5 border-b border-[#333] flex justify-between items-center bg-[#1a1a1a]"
+      >
+        <h2 class="text-xs font-bold text-white tracking-widest uppercase">
+          Activity Logs
+        </h2>
+        <a
+          href="/export"
+          class="text-[10px] font-bold text-[#dfff00] bg-[#dfff00]/10 border border-[#dfff00]/30 hover:bg-[#dfff00] hover:text-black px-4 py-2 rounded-lg transition tracking-wider uppercase inline-block"
+        >
+          Export CSV ✦
+        </a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead
+            class="text-[10px] text-gray-500 bg-[#1a1a1a] border-b border-[#333] uppercase tracking-widest"
+          >
+            <tr>
+              <th class="px-6 py-4 font-bold">ID</th>
+              <th class="px-6 py-4 font-bold">Timestamp</th>
+              <th class="px-6 py-4 font-bold">Original Payload</th>
+              <th class="px-6 py-4 font-bold">Sanitized Output</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#222]">
+            {% for log in audit_logs %}
+            <tr class="hover:bg-[#222] transition">
+              <td class="px-6 py-4 text-[#dfff00] font-bold text-xs">
+                #{{ log[0] }}
+              </td>
+              <td class="px-6 py-4 text-gray-500 text-xs whitespace-nowrap">
+                {{ log[1] }}
+              </td>
+              <td
+                class="px-6 py-4 font-mono text-gray-300 text-xs break-all max-w-xs"
+              >
+                {{ log[2] }}
+              </td>
+              <td
+                class="px-6 py-4 font-mono text-[#dfff00] text-xs break-all max-w-xs"
+              >
+                {{ log[3] }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

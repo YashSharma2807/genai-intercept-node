@@ -1,0 +1,7 @@
+--- INTERNAL MEMO: DO NOT SHARE ---
+Project Obsidian Launch Details.
+Lead Engineer: Yash 
+My SAP ID is 99887766.
+Please ensure the database password is: super_secret_db_key_99!
+For any issues, email the IT director at emergency@corporate.com.
+In case we need to buy emergency server space, use the corporate card: 4111-2222-3333-4444.

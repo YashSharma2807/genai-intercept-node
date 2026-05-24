@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise AI Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #111111;
+        color: #e5e5e5;
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+      }
+      .neon-accent {
+        color: #dfff00;
+      }
+      .neon-bg {
+        background-color: #dfff00;
+      }
+    </style>
+  </head>
+  <body class="flex h-screen overflow-hidden">
+    <aside
+      class="w-64 bg-[#0a0a0a] border-r border-[#222] p-4 flex flex-col hidden md:flex"
+    >
+      <div class="flex items-center space-x-3 mb-10 mt-2 px-2">
+        <div
+          class="w-8 h-8 rounded border border-[#222] bg-[#1a1a1a] flex items-center justify-center neon-accent font-bold"
+        >
+          H
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-sm text-white tracking-wide"
+            >AI GATEWAY</span
+          >
+          <span class="text-[10px] text-gray-500 uppercase tracking-widest"
+            >Internal Tool</span
+          >
+        </div>
+      </div>
+      <nav class="flex-1 space-y-2">
+        <a
+          href="/"
+          class="block py-3 px-4 bg-[#1a1a1a] text-[#dfff00] border border-[#333] rounded-lg text-xs font-bold tracking-wider"
+          >NEW CHAT ✨</a
+        >
+        <a
+          href="/admin"
+          target="_blank"
+          class="block py-3 px-4 text-gray-500 hover:text-white hover:bg-[#1a1a1a] rounded-lg transition text-xs font-bold tracking-wider"
+          >DLP CONSOLE</a
+        >
+      </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col bg-[#111111]">
+      <header
+        class="p-4 border-b border-[#222] flex justify-end items-center bg-[#0a0a0a]"
+      >
+        <div
+          class="flex items-center text-[10px] font-bold text-[#dfff00] tracking-widest border border-[#dfff00]/30 px-3 py-1.5 rounded bg-[#dfff00]/10"
+        >
+          <span class="w-2 h-2 rounded-full neon-bg mr-2"></span> SECURED BY DLP
+        </div>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-8 space-y-6">
+        <div class="text-center text-gray-500 mt-10 mb-10">
+          <h2 class="font-bold text-white text-3xl tracking-tight mb-2">
+            Get more out of<br />your security with AI
+          </h2>
+          <p class="text-xs mt-4 max-w-md mx-auto text-gray-400">
+            This workspace is monitored. Do not bypass security controls to
+            submit sensitive PII or credentials.
+          </p>
+        </div>
+
+        {% if ai_response %}
+        <div
+          class="bg-[#1e1e1e] border border-[#333] rounded-xl p-6 max-w-4xl mx-auto shadow-2xl"
+        >
+          <div class="flex items-center mb-4 pb-4 border-b border-[#333]">
+            <div
+              class="w-8 h-8 rounded bg-[#2a2a2a] text-[#dfff00] flex items-center justify-center mr-3 font-bold text-sm"
+            >
+              AI
+            </div>
+            <div>
+              <div
+                class="font-bold text-white text-xs tracking-wider uppercase"
+              >
+                System Response
+              </div>
+              <div
+                class="text-[10px] text-gray-500 mt-0.5 tracking-widest uppercase"
+              >
+                Automated Output
+              </div>
+            </div>
+          </div>
+          <div
+            class="text-gray-300 leading-relaxed whitespace-pre-wrap text-sm"
+          >
+            {{ ai_response }}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="p-6 border-t border-[#222] bg-[#0a0a0a]">
+        <form
+          action="/intercept"
+          method="POST"
+          enctype="multipart/form-data"
+          class="max-w-4xl mx-auto relative flex items-center space-x-4"
+        >
+          <div
+            id="file-indicator"
+            class="hidden absolute -top-10 left-16 bg-[#dfff00] text-black px-3 py-1.5 rounded-md text-[10px] font-bold tracking-wider flex items-center z-10"
+          >
+            <span id="file-name">📄 filename.txt</span>
+            <button
+              type="button"
+              id="remove-file"
+              class="ml-3 text-black/60 hover:text-black focus:outline-none transition"
+              title="Remove File"
+            >
+              ✕
+            </button>
+          </div>
+
+          <label
+            class="cursor-pointer bg-[#1e1e1e] hover:bg-[#2a2a2a] text-gray-400 hover:text-[#dfff00] p-4 rounded-xl border border-[#333] transition flex items-center justify-center"
+            title="Attach Document"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+              />
+            </svg>
+            <input
+              type="file"
+              name="secure_file"
+              id="secure_file_input"
+              accept=".txt"
+              class="hidden"
+            />
+          </label>
+
+          <div class="relative flex-1">
+            <input
+              type="text"
+              name="employee_prompt"
+              placeholder="Message the assistant or upload a file..."
+              class="w-full bg-[#1e1e1e] border border-[#333] text-gray-200 rounded-xl pl-5 pr-14 py-4 focus:outline-none focus:border-[#dfff00] transition text-sm"
+            />
+            <button
+              type="submit"
+              class="absolute right-2 top-2 bg-[#dfff00] hover:bg-[#c9e600] text-black p-2.5 rounded-lg transition font-bold"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const fileInput = document.getElementById("secure_file_input");
+      const fileIndicator = document.getElementById("file-indicator");
+      const fileNameDisplay = document.getElementById("file-name");
+      const removeFileBtn = document.getElementById("remove-file");
+
+      fileInput.addEventListener("change", function (event) {
+        if (this.files && this.files.length > 0) {
+          fileNameDisplay.textContent = "📄 " + this.files[0].name;
+          fileIndicator.classList.remove("hidden");
+        } else {
+          fileIndicator.classList.add("hidden");
+        }
+      });
+
+      removeFileBtn.addEventListener("click", function () {
+        fileInput.value = "";
+        fileIndicator.classList.add("hidden");
+      });
+    </script>
+  </body>
+</html>
